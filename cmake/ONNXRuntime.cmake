@@ -1,7 +1,9 @@
 # ONNX Runtime Configuration
 
 # Set ONNX Runtime directory (modify accordingly)
-set(ONNX_RUNTIME_DIR $ENV{HOME}/onnxruntime-linux-x64-gpu-1.15.1)
+# set(ONNX_RUNTIME_DIR $ENV{HOME}/onnxruntime-linux-x64-gpu-1.15.1)
+set(ONNX_RUNTIME_DIR "${3rdlib_DIR}/onnxruntime")
+MESSAGE("ONNX_RUNTIME_DIR: ${ONNX_RUNTIME_DIR}")
 
 # Find CUDA (if available)
 find_package(CUDA)
