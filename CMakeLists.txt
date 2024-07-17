@@ -139,4 +139,29 @@ if (MSVC)
 	endif()
 endif (MSVC)
 
+################################################################################
+set(SRC_LIST Task_specific_main.cpp src/inference-engines/InferenceInterface.cpp ${DETECTORS_SOURCES})
+if (DEFAULT_BACKEND STREQUAL "ONNX_RUNTIME")
+	list(APPEND SRC_LIST ${ONNX_RUNTIME_SOURCES})
+	add_compile_definitions(USE_ONNX_RUNTIME)
+endif()
 
+SET(TestName "TestSpecificTask")
+ADD_EXECUTABLE(${TestName} ${SRC_LIST})
+TARGET_INCLUDE_DIRECTORIES(${TestName} PRIVATE inc src src/detectors src/inference-engines  src/videocapture ${OpenCV_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(${TestName} PRIVATE gflags glog ${OpenCV_LIBS})
+
+if (DEFAULT_BACKEND STREQUAL "ONNX_RUNTIME")
+    TARGET_INCLUDE_DIRECTORIES(${TestName} PRIVATE ${ONNX_RUNTIME_DIR}/include src/inference-engines/onnx-runtime)
+    TARGET_LINK_DIRECTORIES(${TestName} PRIVATE ${ONNX_RUNTIME_DIR}/lib)
+    TARGET_LINK_LIBRARIES(${TestName} PRIVATE ${ONNX_RUNTIME_DIR}/lib/onnxruntime.lib)
+endif()
+
+
+if (MSVC)
+	SET_TARGET_PROPERTIES(${TestName} PROPERTIES
+				  RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin
+				  RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin
+				  DEBUG_POSTFIX "d"
+				  )
+endif (MSVC)

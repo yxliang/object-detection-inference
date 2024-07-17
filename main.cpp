@@ -6,18 +6,19 @@
 
 
 static const std::string params = "{ help h   |   | print help message }"
-"{ type     |  yolov9 | yolov4, yolov5, yolov6, yolov7,yolov8, yolov9, rtdetr, rtdetrul}"
-"{ source s   |   | path to image or video source}"
-"{ labels lb  |  | path to class labels}"
-"{ config c   |   | optional model configuration file}"
-"{ weights w  |   | path to models weights}"
-"{ use_gpu   | false  | activate gpu support}"
-"{ min_confidence | 0.5   | optional min confidence}";
+"{ type       |  yolov9 | yolov4, yolov5, yolov6, yolov7,yolov8, yolov9, rtdetr, rtdetrul}"
+"{ source s   |         | path to image or video source}"
+"{ labels lb  |         | path to class labels}"
+"{ config c   |         | optional model configuration file}"
+"{ weights w  |         | path to models weights}"
+"{ use_gpu    | false   | activate gpu support}"
+"{ min_confidence | 0.5 | optional min confidence}";
 
 
 int main(int argc, char* argv[]) {
-	DLOG(INFO) << "Initializing application";
 	initializeLogger();
+	DLOG(INFO) << "Current path is " << std::filesystem::current_path();
+	DLOG(INFO) << "Initializing application";
 
 	// Command line parser
 	cv::CommandLineParser parser(argc, argv, params);
@@ -65,8 +66,22 @@ int main(int argc, char* argv[]) {
 	LOG(INFO) << "Detector typ: " << detectorType;
 
 	float confidenceThreshold = parser.get<float>("min_confidence");
-	std::vector<std::string> classes = readLabelNames(labelsPath);
-	LOG(INFO) << "Current path is " << std::filesystem::current_path();
+	//std::vector<std::string> classes = readLabelNames(labelsPath);
+	std::vector<std::string> classes = {
+	"person", "bicycle", "car", "motorcycle", "airplane", "bus", "train",
+	"truck", "boat", "traffic light", "fire hydrant", "stop sign",
+	"parking meter", "bench", "bird", "cat", "dog", "horse", "sheep",
+	"cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
+	"handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
+	"sports ball", "kite", "baseball bat", "baseball glove", "skateboard",
+	"surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork",
+	"knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange",
+	"broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair",
+	"couch", "potted plant", "bed", "dining table", "toilet", "tv",
+	"laptop", "mouse", "remote", "keyboard", "cell phone", "microwave",
+	"oven", "toaster", "sink", "refrigerator", "book", "clock", "vase",
+	"scissors", "teddy bear", "hair drier", "toothbrush"
+	};
 
 	std::unique_ptr<Detector> detector = createDetector(detectorType);
 

@@ -14,11 +14,9 @@ public:
 
 	}
 
-	//static void SetLogger(const std::shared_ptr<spdlog::logger>& logger) 
-	//{
-	//    logger_ = logger;
-	//}
-
+	void getWH(size_t& w, size_t& h) {
+		w = network_width; h = network_height;
+	}
 
 	virtual std::tuple<std::vector<std::vector<std::any>>, std::vector<std::vector<int64_t>>> get_infer_results(const cv::Mat& input_blob) = 0;
 
@@ -27,6 +25,6 @@ protected:
 	size_t get_blob_size(const cv::Mat& input_blob);
 	//static std::shared_ptr<spdlog::logger> logger_; 
 
-
+	size_t network_width, network_height;
 
 };

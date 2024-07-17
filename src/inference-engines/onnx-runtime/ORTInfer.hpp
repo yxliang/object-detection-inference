@@ -8,10 +8,9 @@ class ORTInfer : public InferenceInterface
 private:
 	Ort::Env env_{ ORT_LOGGING_LEVEL_WARNING, "Default" };
 	Ort::Session session_{ nullptr };
-	std::vector<std::string> input_names_;  // Store input layer names
-	std::vector<std::string> output_names_; // Store output layer names
-	std::vector<std::vector<int64_t>> input_shapes_;
-	std::vector<std::vector<int64_t>> output_shapes_;
+	Ort::MemoryInfo memory_info{ nullptr };
+	std::vector<std::string> input_names_, output_names_;  // Store input/output layer names
+	std::vector<std::vector<int64_t>> input_shapes_, output_shapes_;
 
 public:
 	std::string print_shape(const std::vector<std::int64_t>& v);
